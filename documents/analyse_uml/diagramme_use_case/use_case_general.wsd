@@ -1,0 +1,118 @@
+@startuml Codecouleur
+left to right direction
+skinparam actorStyle awesome
+skinparam backgroundcolor Grey/Black
+skinparam classBackgroundColor Wheat|CornflowerBlue
+package Administration #White{
+    actor Admin as ADMIN #Gold
+    actor SuperAdmin as SUPADMIN #WhiteSmoke
+}
+
+
+Rectangle Quidideance #DarkCyan {
+
+    ("Surfer sur le site") as SURF #White
+    
+package Administrer #DarkSeaGreen/SeaGreen {
+    ("Créer un admin") as ADMNEW #White
+    ("Modifier un admin") as ADMEDIT #White
+    ("Supprimer un admin") as ADMDELETE #White
+    ("Voir un admin") as ADMSHOW #White
+    ("Admin") as ADMINS #White
+    ("Super admin") as SUPER #White
+}    
+package Interroger #RoyalBlue/LightBlue {
+
+    ("Créer une question") as INTNEW #White
+    ("Modifier une question") as INTEDIT #White
+    ("Supprimer une question") as INTDELETE #White
+    ("Voir une question") as INTSHOW #White
+}
+package Sonder #Orange/OrangeRed {
+
+    ("Créer un sondage") as SONNEW #White
+    ("Modifier un sondage") as SONEDIT #White
+    ("Supprimer un sondage") as SONDELETE #White
+    ("Voir un sondage") as SONSHOW #White
+}
+
+package Répondre #Purple/MediumPurple {
+
+    ("Créer une réponse") as REPNEW #White
+    ("Modifier une réponse") as REPEDIT #White
+    ("Supprimer une réponse") as REPDELETE #White
+    ("Voir une réponse") as REPSHOW #White
+}
+package Gérer #LightCoral/DarkBlue {
+
+    ("Gérer") as GER #WhiteSmoke
+    ("Modifier son compte") as GEREDIT #White
+    ("Voir ses informations") as GERSHOW #White
+}
+package Authentifier #Grey/DarkGrey {
+    ("Se connecter") as CON #White
+    ("Se déconnecter") as DEC #White
+}
+
+package Lier #Grey/DarkGrey {
+    ("Créer un lien Url") as LIENEW #White
+    ("Modifier un lien Url") as LIEEDIT #White
+    ("Supprimer un lien Url") as LIEDELETE #White
+    ("Voir un lien Url") as LIESHOW #White
+}
+
+    SUPADMIN--|> ADMIN : Généralisation Super admin à admin
+
+
+
+    ADMIN--up->CON #Gold
+    ADMIN--->DEC #Gold
+    ADMIN-->SURF #Gold
+
+
+
+    ADMIN--->SONNEW #Gold : un admin ne pourra que créer son sondage
+    SONNEW<..-SONEDIT #Gold : un admin ne pourra que modifier son sondage Include
+    SONNEW<..-SONDELETE #Gold : un admin ne pourra que supprimer son sondage Include
+    SONNEW<..-SONSHOW #Gold : Include 
+
+    ADMIN--->INTNEW #Gold
+    INTNEW<..-INTEDIT #Gold : Include
+    INTNEW<..-INTDELETE #Gold : Include
+    INTNEW<..-INTSHOW #Gold : Include
+
+    ADMIN--->REPNEW #Gold
+    REPNEW<..-REPEDIT #Gold : Include
+    REPNEW<..-REPDELETE #Gold : Include
+    REPNEW<..-REPSHOW #Gold : Include
+
+    ADMIN--->GER #Gold
+    GER-..>GEREDIT #Gold : Extend
+    GER-..>GERSHOW #Gold : Extend
+
+    SUPADMIN--->ADMNEW #White
+    ADMNEW<..-ADMEDIT #White : Include
+    ADMNEW<..-ADMDELETE #White : Include
+    ADMNEW<..-ADMSHOW #White : Include
+    ADMNEW-left->ADMINS #White : Extend
+    ADMNEW-right->SUPER #White : Extend
+
+    CON<.-DEC #White : Include
+    SUPADMIN-.>CON #White : Include
+    GER-.>CON #White : Include
+    SONNEW<..-INTNEW #White : Include
+    INTNEW<..-REPNEW #White : Include
+    
+    
+    
+    
+    
+
+
+
+      
+    
+  
+}
+
+@enduml

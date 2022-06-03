@@ -1,0 +1,43 @@
+
+    {% extends 'base.html.twig' %}
+
+{% block title %}reponse{% endblock %}
+
+{% block content %}
+<div class="container py-3">
+    <div class="py-3">
+        <a href="{{ path('app_reponse_index') }}" class="btn btn-success mt-3 btn-outline-primary">Retour au tableau</a>
+    
+       </div>
+        <div class="jumbotron text-center py-3">
+            <h1> {{ reponse.titre}}</h1>
+        </div>
+        <div class="py-3">
+            <table class="table table-striped bordored-radius=2px text-center table-dark">
+                <thead class="table-primary text-uppercase text-bold">
+                    <tr><th>Titre</th>
+                <th>Date de création</th>
+                <th>Date de modification</th>
+               </tr>
+
+            </thead>
+            <tbody>
+               
+                <tr>
+                    
+                    <td>{{ reponse.titre }}</td>       
+                
+                    <td>{{ reponse.datecreation ? reponse.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+                
+                
+                    <td>{{ reponse.datemiseajour ? reponse.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
+                
+                
+                </tr>
+    
+            </tbody>
+        </table>
+        </div>
+    
+</div>
+   {% endblock %}

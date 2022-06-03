@@ -1,0 +1,51 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau sondage{% endblock %}
+
+{% block content %}
+<div class="py-3">
+    <a href="{{ path('app_sondage_index') }}" class="btn btn-primary mt-3">Retour au tableau des sondages</a>
+
+</div>
+    <div class="jumbotron text-center py-3">
+        <h1>Ajout d'un sondage</h1>
+    </div>
+    <div class="content py-3">
+        <div class="py-3">
+            {{ include('sondage/_form.html.twig') }}
+    
+        </div>
+
+    </div>
+
+<script>
+    window.onload = () => {
+        //on va chercher les categories
+        let categorie = document.querySelector("#sondage_categorie");
+        categorie.addEventListener("change", function(){
+            // récupération du formulaire en appel ajax
+            let form = this.closest("form");
+            console.log(form)
+;            //envoie du formulaire en ajax
+            let data = this.intitule + "=" + this.value;
+            
+            fetch(form.action, {
+                method: form.getAttribute("method"),
+                body: data,
+                headers: {
+                    "Content-Type": "application/x-www-form-urlencoded;charset:utf-8"
+                }
+            })
+            //on traite la réponse
+            .then(response => response.text())
+            .then(html => {
+                //on traite le contenu
+                let content = document.createElement("html");
+                content.innerHTML = html;
+                let nouveauSelect = content.querySelector("#sondage_question");
+                document.querySelector("#sondage_question").replaceWith(nouveauSelect);
+            });
+        });
+    }
+</script>   
+{% endblock %}

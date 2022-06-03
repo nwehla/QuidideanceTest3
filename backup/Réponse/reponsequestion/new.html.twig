@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Nouveau Reponsequestion{% endblock %}
+
+{% block body %}
+    <div class="container py-3">
+        <div class="py-3">
+            <a href="{{ path('app_reponsequestion_index') }}" class="btn btn-primary mt-3 btn-outline-primary">Retour au tableau </a>
+        
+        </div>
+            <div class="jumbotron text-center py-3">
+                <h1>Nouveau</h1>
+            </div>
+            <div class="py-3 width 30%">
+                {{ include('reponsequestion/_form.html.twig') }}
+        
+            </div>
+        
+    </div>
+{% endblock %}

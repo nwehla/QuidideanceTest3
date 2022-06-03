@@ -1,0 +1,70 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Gestion des reponses{% endblock %}
+
+{% block content %}
+
+<div class="container py-3">
+    {% for message in app.flashes('success') %}
+    <div class="alert alert-success py-3">
+        {{ message }}
+    </div>
+    {% endfor %}
+    
+    <div class="py-3" id="3">
+        <a href="{{ path('app_reponse_new') }}" class="btn btn-success mt-3 btn-outline-primary">Nouvel admin</a>
+    
+    </div>
+    
+    <div class="jumbotron text-center py-3">
+        <h1>Gestion des reponses</h1>
+    </div>
+    </br>
+        
+    <div class="py-3">
+        <table class="table table-striped bordored-radius=2px text-center table-dark">
+            <thead class="table-primary text-uppercase text-bold">
+            <tr>
+                <th>Titre</th>
+                <th>Datecreation</th>
+                <th>Datemiseajour</th>
+                <th>Slug</th>
+                <th>Voir</th>
+                <th>Modifier</th>
+                <th>Supprimer</th>
+
+            </tr>
+        </thead>
+        <tbody>
+        {% for reponsequestion in reponsequestions %}
+            <tr>
+                <td>{{ reponsequestion.titre }}</td>
+                <td>{{ reponsequestion.datecreation ? reponsequestion.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reponsequestion.datemiseajour ? reponsequestion.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reponsequestion.slug }}</td>
+                <td>
+                    <a href="{{ path('app_reponsequestion_show', {'id': reponsequestion.id}) }}">show</a>
+                    <a href="{{ path('app_reponsequestion_edit', {'id': reponsequestion.id}) }}">edit</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_reponsequestion_show', {'slug': reponsequestion.slug|default('default_slug') }) }}" class="btn btn-dark mt-3">Voir</a>
+                </td>
+                <td>
+                    <a href="{{ path('app_reponsequestion_edit', {'slug': reponsequestion.slug|default('default_slug')}) }}" class="btn btn-warning mt-3 btn-outline-warning">Modifier</a>
+                </td>
+                <td>
+                    {{ include('reponsequestion/_delete_form.html.twig') }}
+
+
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">Pas d'enregistrement trouvé</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reponsequestion_new') }}">Create new</a>
+{% endblock %}

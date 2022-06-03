@@ -1,0 +1,25 @@
+Scénario:
+use case : Administrer
+acteurs principal :  SuperAdmin
+acteur secondaire : aucun 
+Objectif : 
+            -Faire le CRUD (Create/Read/Update/Delete)  des Admins.
+            -Faire le CRUD(Create/Read/Update/Delete) des Formulaires.
+            -Faire le CRUD(Create/Read/Update/Delete) des Questionnaires.
+            -Faire le CRUD(Create/Read/Update/Delete) des Questions.
+            
+Pré-condition :  serveur actif, être authentifier en tant que SuperAdmin.
+Post-condition : Administration du site
+Déclencheur :    Besoin d'administrer le site.
+
+Scénario Principal 
+1.Le SuperAdmin clique créer un admin ou créer un formulaire ou encore
+                       créer des questions et les réponses .
+2.Le SuperAdmin clique sur un bouton valider.
+5.Affichage d'un message "message envoyer".
+
+Scénari alternatifs
+1. Erreur serveur, affichage page d'erreur./Retour au scénario 1.
+4. Erreur lors de l'envoie du message :
+    1. Champ de saisi incorrect (vide, mal rempli) affichage d'un message "Veuillez remplir corriger ce(s) champ(s)"  
+    Retour sur le scénario 3.

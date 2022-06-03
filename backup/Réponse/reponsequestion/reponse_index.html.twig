@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Reponsequestion index{% endblock %}
+
+{% block body %}
+    <h1>Reponsequestion index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Datecreation</th>
+                <th>Datemiseajour</th>
+                <th>Slug</th>
+                <th>Titre</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for reponsequestion in reponsequestions %}
+            <tr>
+                <td>{{ reponsequestion.id }}</td>
+                <td>{{ reponsequestion.datecreation ? reponsequestion.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reponsequestion.datemiseajour ? reponsequestion.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
+                <td>{{ reponsequestion.slug }}</td>
+                <td>{{ reponsequestion.titre }}</td>
+                <td>
+                    <a href="{{ path('app_reponsequestion_show', {'id': reponsequestion.id}) }}">show</a>
+                    <a href="{{ path('app_reponsequestion_edit', {'id': reponsequestion.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_reponsequestion_new') }}">Create new</a>
+{% endblock %}

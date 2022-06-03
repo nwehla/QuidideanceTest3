@@ -1,0 +1,99 @@
+@startuml Codecouleur
+left to right direction
+skinparam actorStyle awesome
+skinparam backgroundcolor Grey/Black
+skinparam classBackgroundColor Wheat|CornflowerBlue
+package Administration #White{
+    actor SuperAdmin as SUPADMIN #WhiteSmoke
+}
+
+
+Rectangle Quidideance #DarkCyan/LightBlue {
+
+    ("Surfer sur le site") as SURF #White
+    
+package Administrer #DarkSeaGreen/SeaGreen{
+    ("Créer un compte") as ADMNEW #White
+    ("Modifier un compte") as ADMEDIT #White
+    ("Supprimer un compte") as ADMDELETE #White
+    ("Voir un compte") as ADMSHOW #White
+    ("Admin") as ADMIN #White
+    ("Super admin") as SUPER #White
+}    
+package Interroger #RoyalBlue/LightBlue {
+
+    ("Créer une question") as INTNEW #White
+    ("Modifier une question") as INTEDIT #White
+    ("Supprimer une question") as INTDELETE #White
+    ("Voir une question") as INTSHOW #White
+}
+package Questionner #Orange/OrangeRed {
+
+    ("Créer un questionnaire") as QUENEW #White
+    ("Modifier un questionnaire") as QUEEDIT #White
+    ("Supprimer un questionnaire") as QUEDELETE #White
+    ("Voir un questionnaire") as QUESHOW #White
+}
+package Répondre #Purple/MediumPurple {
+
+    ("Créer une réponse") as REPNEW #White
+    ("Modifier une réponse") as REPEDIT #White
+    ("Supprimer une réponse") as REPDELETE #White
+    ("Voir une réponse") as REPSHOW #White
+}
+package Gérer #LightCoral/DarkBlue {
+
+    ("Gérer") as GER #White
+    ("Modifier son compte") as GEREDIT #White
+    ("Voir ses information") as GERSHOW #White
+}
+
+package Authentifier #Grey/DarkGrey {
+
+    ("Se connecter") as CON #White
+    ("Se déconnecter") as DEC #White
+}
+
+
+    SUPADMIN--left->CON #White
+    SUPADMIN--left->DEC #White
+    SUPADMIN-->SURF #White
+
+
+
+    SUPADMIN--->QUENEW #White
+    QUENEW<..-QUEEDIT #White : Include
+    QUENEW<..-QUEDELETE #White : Include
+    QUENEW<..-QUESHOW #White : Include
+
+    SUPADMIN--->INTNEW #White
+    INTNEW<..-INTEDIT #White : Include
+    INTNEW<..-INTDELETE #White : Include
+    INTNEW<..-INTSHOW #White : Include
+
+    SUPADMIN--->REPNEW #White
+    REPNEW<..-REPEDIT #White : Include
+    REPNEW<..-REPDELETE #White : Include
+    REPNEW<..-REPSHOW #White : Include
+
+    SUPADMIN--->GER #White
+    GER-..>GEREDIT #White : Extend
+    GER-..>GERSHOW #White : Extend
+
+    SUPADMIN--->ADMNEW #White
+    ADMNEW<..-ADMEDIT #White : Include
+    ADMNEW<..-ADMDELETE #White : Include
+    ADMNEW<..-ADMSHOW #White : Include
+    ADMNEW-left->ADMIN #White : Extend
+    ADMNEW-right->SUPER #White : Extend
+
+
+    CON<.-DEC #White : Include 
+    SUPADMIN-.>CON #White : Include
+    GER-.>CON #White : Include
+    QUENEW<..-INTNEW #White : Include
+    INTNEW<..-REPNEW #White : Include
+
+}
+
+@enduml
