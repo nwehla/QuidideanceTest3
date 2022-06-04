@@ -3,6 +3,7 @@
 namespace App\Repository;
 
 use App\Entity\Utilisateur;
+use Doctrine\ORM\Query;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\ORM\OptimisticLockException;
 use Doctrine\ORM\ORMException;
@@ -44,6 +45,13 @@ class UtilisateurRepository extends ServiceEntityRepository
             $this->_em->flush();
         }
     }
+
+    
+    public function findWithPagination() :Query {
+        return$this->createQueryBuilder('u')
+        ->getQuery();
+    }
+
 
     // /**
     //  * @return Utilisateur[] Returns an array of Utilisateur objects

@@ -9,16 +9,17 @@ use Symfony\Component\Mime\Email;
 use App\Form\UtilisateurModifierType;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UtilisateurRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Security\Guard\AuthenticatorInterface;
 use Symfony\Component\Security\Guard\GuardAuthenticatorHandler;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
-use Symfony\Component\String\Slugger\SluggerInterface;
 
 
 /**
@@ -51,11 +52,17 @@ class UtilisateurController extends AbstractController
     /**
      * @Route("/", name="app_utilisateur_index", methods={"GET"})
      */
-    public function index(UtilisateurRepository $utilisateurRepository): Response
+    public function index(UtilisateurRepository $utilisateurRepository,PaginatorInterface $pagi,Request $request): Response
     {
          if ($this->isGranted('ROLE_SUPERADMIN')) {
+            $utilisateurs = $pagi->paginate(
+                $utilisateurRepository->findWithPagination(),
+                $request->query->getInt('page',1),7
+                        
+            );
         return $this->render('utilisateur/utilisateur_index.html.twig', [
-            'utilisateurs' => $utilisateurRepository->findAll(),
+            'utilisateurs' => $utilisateurs,
+            // 'utilisateurs' => $utilisateurRepository->findAll(),
         ]);
         }
          else{
