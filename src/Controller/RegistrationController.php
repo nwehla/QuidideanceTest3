@@ -1,20 +1,23 @@
 <?php
 
 namespace App\Controller;
-use Symfony\Component\Config\Definition\Exception\Exception;
 use App\Entity\Utilisateur;
 use App\Security\EmailVerifier;
+use Symfony\Component\Mime\Email;
 use App\Form\Password1erefoisType;
 use App\Form\RegistrationFormType;
 use Symfony\Component\Mime\Address;
+use Symfony\Component\Mailer\Mailer;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Repository\UtilisateurRepository;
 use Symfony\Bridge\Twig\Mime\TemplatedEmail;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Mailer\MailerInterface;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
 use Symfony\Contracts\Translation\TranslatorInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 use SymfonyCasts\Bundle\VerifyEmail\Exception\VerifyEmailExceptionInterface;
@@ -49,7 +52,7 @@ class RegistrationController extends AbstractController
      /**
       * @Route("/admin/utilisateur/new", name="app_utilisateur_new", methods={"GET", "POST"})
       */
-    public function register(Request $request, EntityManagerInterface $entityManager): Response
+    public function register(Request $request, EntityManagerInterface $entityManager,MailerInterface $mailer,UserPasswordHasherInterface $encoder): Response
     {
 
         if ($this->isGranted('ROLE_SUPERADMIN') ) {
@@ -59,11 +62,14 @@ class RegistrationController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+             //Recuperation du mot de passe non encodé pour envoie pour première connexion
+             $provisoire = $user->getPassword(); 
              //Encodage du mot de passe
-            //  $password = $encoder->hashPassword($user , $user->getPassword());
+
+              $password = $encoder->hashPassword($user , $user->getPassword());
             
-            // $user->setPassword($password)
-                $message = $user->setPassword('Toto@2022');
+              $user->setPassword($password);
+            //     $password = $user->getPassword();
                 $user->setSlug($this->getSlugger($user));
            
             $entityManager->persist($user);
@@ -74,15 +80,21 @@ class RegistrationController extends AbstractController
                 (new TemplatedEmail())
                     ->from(new Address('nwehlav@gmail.com', '"Quidideance Contact"'))
                     ->to($user->getEmail())
-                    ->subject('Confirmation de votre compte'.$user->getPassword())
-                    ->text('votre mot de passe provisoire est '.$user->getPassword())
+                    ->subject('Confirmation de votre compte') 
+                      // pass variables (name => value) to the template
+    ->context([
+        'expiration_date' => new \DateTimeImmutable('+7 days'),
+        'provisoire' => $provisoire,
+    ])
+          
                     ->htmlTemplate('registration/confirmation_email.html.twig')
                     
                     
             );
-            // do anything else you need here, like send an email
 
-            return $this->redirectToRoute('app_utilisateur_index');
+            $this->addFlash("success","La création a bien été effectuée");
+
+             return $this->redirectToRoute('app_utilisateur_index');
         }
 
             return $this->render('utilisateur/new.html.twig', [
@@ -166,10 +178,13 @@ class RegistrationController extends AbstractController
                 //Notification pour dire que le mot de passe est bien changé
                 $notification = "Votre mot de passe a bien été mis à jour.";
                 return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
-            }    
-        return $this->render('compte/compte_password_1erefois.html.twig', [
-            'form' => $form->createView(),
-            'notification' => $notification
-        ]);
-    }
+            }else{
+                $notification = "Echec de modification de votre mot de passe! veuillez recommencer, merçi.";
+                return $this->render('compte/compte_password_1erefois.html.twig', [
+                    'form' => $form->createView(),
+                    'notification' => $notification
+                ]);
+            
+            }   
+        }
 }

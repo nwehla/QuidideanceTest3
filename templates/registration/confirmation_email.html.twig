@@ -3,12 +3,16 @@
 </div>
 
 <p>
-    Bonjour, veuillez confirmez votre inscription en cliquant sur le lien ci-dessous <br><br>
-    <a href="{{ signedUrl }}">Confirmer votre email</a>.
+    Bonjour, veuillez confirmez votre inscription en cliquant sur le lien ci-dessous  
+</br><a href="{{ signedUrl }}">Confirmer votre email</a>.
     Ce lien expirera dans {{ expiresAtMessageKey|trans(expiresAtMessageData, 'VerifyEmailBundle') }}.
 </p>
-Votre mot de passe temporaire est : {{ message.attribut }}
+<p>
+     veuillez utiliser le mot de passe  ci-dessous pour votre première connexion<br>
+   <p class=".font-weight-bold">
+    {{ provisoire }} .
 
+   </p> <p>Vous devriez le modifier après votre première connexion.</p>
 
 <p>
     Salutations!

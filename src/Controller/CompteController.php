@@ -78,6 +78,7 @@ class CompteController extends AbstractController
 
                 //Notification pour dire que le mot de passe est bien changé
                 $notification = "Votre mot de passe a bien été mis à jour.";
+                return $this->redirectToRoute("compte");
             }
         } else {
             $notification = "Votre mot de passe actuel n'est pas le bon.";
@@ -119,11 +120,14 @@ class CompteController extends AbstractController
                 $utilisateurRepository->add($utilisateur);
                 $this->addFlash("success", "La modification a été effectuée");
                 return $this->redirectToRoute('app_utilisateur_index', [], Response::HTTP_SEE_OTHER);
+            }else{
+                $this->addFlash("success", "La modification n'a pas été effectuée");
+                return $this->render('compte/formModifierCompte.html.twig', [
+                    'utilisateur' => $utilisateur,
+                    'formModifierCompte' => $form->createView(),
+                ]);               
+      
             }
 
-            return $this->render('compte/formModifierCompte.html.twig', [
-                'utilisateur' => $utilisateur,
-                'formModifierCompte' => $form->createView(),
-            ]);               
-    }
+              }
 }
