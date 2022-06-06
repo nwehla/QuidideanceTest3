@@ -50,7 +50,7 @@
             {{ dump(interrogers)}}
         {% for interroger in interrogers %}
             <tr>
-                <td>{{ interroger.intitule }}</td>
+                <td>{{ dump(interroger.intitule) }}</td>
                 {% for cat in interroger.categorie %}
 
                 <td class="d-flex flex-column  mb-2">{{ cat|raw }}</td>   
@@ -59,7 +59,7 @@
                 {% endfor %}
                 {# {{ interroger.reponses }} #}
                 {% for toto in interroger.reponses %}
-               {{ toto|raw}}
+                <td>{{ dump(toto.titre) }}</td>
                 {% endfor %}
 
                 

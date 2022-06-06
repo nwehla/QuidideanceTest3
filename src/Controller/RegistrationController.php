@@ -63,7 +63,8 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {
              //Recuperation du mot de passe non encodé pour envoie pour première connexion
-             $provisoire = $user->getPassword(); 
+             $provisoire = $user->getPassword();
+             $identifiant = $user->getEmail(); 
              //Encodage du mot de passe
 
               $password = $encoder->hashPassword($user , $user->getPassword());
@@ -85,6 +86,7 @@ class RegistrationController extends AbstractController
     ->context([
         'expiration_date' => new \DateTimeImmutable('+7 days'),
         'provisoire' => $provisoire,
+        'identifiant'=> $identifiant,
     ])
           
                     ->htmlTemplate('registration/confirmation_email.html.twig')
@@ -134,14 +136,14 @@ class RegistrationController extends AbstractController
         }
 
         // @TODO Change the redirect on success and handle or remove the flash message in your templates
-        $this->addFlash('success', 'Your email address has been verified.');
+        $this->addFlash('success', 'Votre email a bien été validée.');
 
-        return $this->redirectToRoute('compte_password');
+        return $this->redirectToRoute('compte_premiere_connexion');
     }
 
     
      /**
-     * @Route("/modifier-mon-mot-de-passe-première-fois", name="compte_premiere_connexion")
+     * @Route("/admin/modifier-mon-mot-de-passe-première-fois", name="compte_premiere_connexion")
      */
     public function modifierPasswordPremiereConnexion(Request $request, UserPasswordHasherInterface $encoder, EntityManagerInterface $entityManager): Response
     {
@@ -157,27 +159,23 @@ class RegistrationController extends AbstractController
 
         if ($form->isSubmitted() && $form->isValid()) {                           
                // Encode(hash) the plain password, and set it.
+            $new = $form->get('new_password')->getData();   
             $encodedPassword = $encoder->hashPassword(
                 $user,
-                $form->get('new_password')->getData()
+                $new
             );
 
             $user->setPassword($encodedPassword);
-             //Encodage du mot de passe
-            // $password = $encoder->hashPassword($user , $user->getPassword());
-            
-            // $user->setPassword($password);
-           
-            // $entityManager->persist($user);
-            // $entityManager->flush();
+                       
+            $entityManager->persist($user);
             
 
-                //Mettre à jour sur la base de 
-                $entityManager->flush();
+            //Mettre à jour sur la base de 
+            $entityManager->flush();
 
-                //Notification pour dire que le mot de passe est bien changé
-                $notification = "Votre mot de passe a bien été mis à jour.";
-                return $this->redirectToRoute('app_login', [], Response::HTTP_SEE_OTHER);
+            //Notification pour dire que le mot de passe est bien changé
+            $notification = "Votre mot de passe a bien été mis à jour.";
+                return $this->redirectToRoute('app_logout', [], Response::HTTP_SEE_OTHER);
             }else{
                 $notification = "Echec de modification de votre mot de passe! veuillez recommencer, merçi.";
                 return $this->render('compte/compte_password_1erefois.html.twig', [
@@ -185,6 +183,6 @@ class RegistrationController extends AbstractController
                     'notification' => $notification
                 ]);
             
-            }   
+            }
         }
 }
