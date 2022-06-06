@@ -8,6 +8,7 @@ use App\Form\SondageType;
 use App\Entity\Interroger;
 use App\Repository\SondageRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -32,10 +33,15 @@ class SondageController extends AbstractController
     /**
      * @Route("/", name="app_sondage_index", methods={"GET"})
      */
-    public function index(SondageRepository $sondageRepository): Response
+    public function index(SondageRepository $sondageRepository,Request $request,PaginatorInterface $pagi): Response
     {
+        $sondages = $pagi->paginate(
+            $sondageRepository->findWithPagination(),
+            $request->query->getInt('page',1),7
+                    
+        );
         return $this->render('sondage/sondage_index.html.twig', [
-            'sondages' => $sondageRepository->findAll(),
+            'sondages' => $sondages,
         ]);
     }
 

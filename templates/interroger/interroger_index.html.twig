@@ -22,8 +22,21 @@
 </br>
     
 <div class="py-3">
-    <table class="table table-striped py-3 ">
-        <thead>
+    <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
+        {{knp_pagination_render(interrogers)}}
+        <svg
+          width="1em"
+          height="1em"
+          viewBox="0 0 16 16"
+          class="position-absolute top-100 start-50 translate-middle bi bi-caret-down-fill"
+          fill="#212529"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+        </svg>
+      </button>
+      <table class="table table-striped bordored-radius=2px text-center table-dark">
+        <thead class="table-primary text-uppercase text-bold">
             <tr>
                 <th>Question</th>
                 <th>Categorie liée à la question</th>
@@ -63,7 +76,7 @@
                     <a href="{{ path('app_interroger_show', {'slug': interroger.slug}) }}" class="btn btn-dark mt-3">Voir</a>
                 </td>
                 <td>
-                    <a href="{{ path('app_interroger_edit', {'slug': interroger.slug}) }}" class="btn btn-warning mt-3">Modifier</a>
+                    <a href="{{ path('app_interroger_edit', {'slug': interroger.slug}) }}" class="btn btn-warning mt-3 btn-outline-warning">Modifier</a>
                 </td>
                 <td>
                     {{ include('interroger/_delete_form.html.twig') }}
@@ -78,7 +91,19 @@
         {% endfor %}
         </tbody>
     </table>
-
+    <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
+        {{knp_pagination_render(interrogers)}}
+        <svg
+          width="1em"
+          height="1em"
+          viewBox="0 0 16 16"
+          class="position-absolute top-100 start-50 translate-middle bi bi-caret-down-fill"
+          fill="#212529"
+          xmlns="http://www.w3.org/2000/svg"
+        >
+          <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+        </svg>
+      </button>
 </div>
 
 

@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Categories;
 use App\Form\CategoriesType;
 use App\Repository\CategoriesRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -28,10 +29,15 @@ class CategoriesController extends AbstractController
     /**
      * @Route("/", name="app_categories_index", methods={"GET"})
      */
-    public function index(CategoriesRepository $categoriesRepository): Response
+    public function index(CategoriesRepository $categoriesRepository,Request $request,PaginatorInterface $pagi): Response
     {
+        $categories = $pagi->paginate(
+            $categoriesRepository->findWithPagination(),
+            $request->query->getInt('page',1),7
+                    
+        );
         return $this->render('categories/categories_index.html.twig', [
-            'categories' => $categoriesRepository->findAll(),
+            'categories' => $categories,
         ]);
     }
 

@@ -3,6 +3,8 @@
 namespace App\Repository;
 
 use App\Entity\Survey;
+use Doctrine\ORM\Query;
+
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 
@@ -38,6 +40,12 @@ class SurveyRepository extends ServiceEntityRepository
             $this->getEntityManager()->flush();
         }
     }
+
+    public function findWithPagination() :Query {
+        return$this->createQueryBuilder('s')
+        ->getQuery();
+    }
+
 
 //    /**
 //     * @return Survey[] Returns an array of Survey objects

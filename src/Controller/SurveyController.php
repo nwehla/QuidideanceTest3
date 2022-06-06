@@ -6,10 +6,12 @@ use App\Entity\Survey;
 use DateTimeImmutable;
 use App\Form\SurveyType;
 use App\Repository\SurveyRepository;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\String\Slugger\SluggerInterface;
+use Knp\Component\Pager\Pagination\PaginationInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 
 /**
@@ -29,11 +31,16 @@ class SurveyController extends AbstractController
     /**
      * @Route("/", name="app_survey_index", methods={"GET"})
      */
-    public function index(SurveyRepository $surveyRepository): Response
+    public function index(SurveyRepository $surveyRepository,Request $request,PaginatorInterface $pagi): Response
     {
         if ($this->isGranted('ROLE_SUPERADMIN')) {
+            $surveys = $pagi->paginate(
+                $surveyRepository->findWithPagination(),
+                $request->query->getInt('page',1),7
+                        
+            );
             return $this->render('survey/survey_index.html.twig', [
-                'surveys' => $surveyRepository->findAll(),
+                'surveys' => $surveys,
             ]);
         }
         else{

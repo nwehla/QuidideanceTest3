@@ -8,6 +8,7 @@ use App\Entity\Interroger;
 use App\Form\InterrogerType;
 use App\Repository\InterrogerRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use phpDocumentor\Reflection\Types\Integer;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -33,10 +34,15 @@ class InterrogerController extends AbstractController
     /**
      * @Route("/", name="app_interroger_index", methods={"GET"})
      */
-    public function index(InterrogerRepository $interrogerRepository): Response
+    public function index(InterrogerRepository $interrogerRepository,Request $request,PaginatorInterface $pagi): Response
     {
+        $interrogers = $pagi->paginate(
+            $interrogerRepository->findWithPagination(),
+            $request->query->getInt('page',1),7
+                    
+        );
         return $this->render('interroger/interroger_index.html.twig', [
-            'interrogers' => $interrogerRepository->findAll(),
+            'interrogers' => $interrogers,
         ]);
     }
 

@@ -3,10 +3,11 @@
 namespace App\Repository;
 
 use App\Entity\Sondage;
-use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
-use Doctrine\ORM\OptimisticLockException;
+use Doctrine\ORM\Query;
 use Doctrine\ORM\ORMException;
+use Doctrine\ORM\OptimisticLockException;
 use Doctrine\Persistence\ManagerRegistry;
+use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 
 /**
  * @method Sondage|null find($id, $lockMode = null, $lockVersion = null)
@@ -31,6 +32,11 @@ class SondageRepository extends ServiceEntityRepository
         if ($flush) {
             $this->_em->flush();
         }
+    }
+
+    public function findWithPagination() :Query {
+        return$this->createQueryBuilder('s')
+        ->getQuery();
     }
 
     /**
