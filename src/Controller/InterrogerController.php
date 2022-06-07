@@ -6,6 +6,7 @@ use App\Entity\Reponse;
 use App\Entity\Categories;
 use App\Entity\Interroger;
 use App\Form\InterrogerType;
+use App\Form\SearchInterrogerType;
 use App\Repository\InterrogerRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Knp\Component\Pager\PaginatorInterface;
@@ -32,17 +33,32 @@ class InterrogerController extends AbstractController
     }
 
     /**
-     * @Route("/", name="app_interroger_index", methods={"GET"})
+     * @Route("/", name="app_interroger_index", methods={"GET","POST"})
      */
     public function index(InterrogerRepository $interrogerRepository,Request $request,PaginatorInterface $pagi): Response
     {
-        $interrogers = $pagi->paginate(
-            $interrogerRepository->findWithPagination(),
-            $request->query->getInt('page',1),7
+        $interrogers = $interrogerRepository->findBy(['active' => true]);
+        $form = $this->createForm(SearchInterrogerType::class);
+        
+        $search = $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()){
+            // On recherche les questions correspondant
+            $interrogers = $interrogerRepository->search(
+                $search->get('mots')->getData(),
+                $search->get('categorie')->getData(),                
+            );
+        }        
+
+        //mise en place de la pagination
+        // $interrogers = $pagi->paginate(
+        //     $interrogerRepository->findWithPagination(),
+        //     $request->query->getInt('page',1),7
                     
-        );
+        // );
         return $this->render('interroger/interroger_index.html.twig', [
             'interrogers' => $interrogers,
+            'form' => $form->createView()
         ]);
     }
 
@@ -56,7 +72,8 @@ class InterrogerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $interroger->setSlug($this->getSlugger($interroger));
+            $interroger->setSlug($this->getSlugger($interroger))
+                        ->setActive(true);
             $interrogerRepository->add($interroger);
             $manager->persist($interroger);
             $manager->flush();
@@ -92,6 +109,8 @@ class InterrogerController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $interroger->setSlug($this->getSlugger($interroger))
+                        ->setActive(true);
             $interrogerRepository->add($interroger);
             $this->addFlash("success","La modification a été effectuée");
             return $this->redirectToRoute('app_interroger_index', [], Response::HTTP_SEE_OTHER);

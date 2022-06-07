@@ -51,6 +51,25 @@ class InterrogerRepository extends ServiceEntityRepository
         ->getQuery();
     }
 
+    /**
+     * Recherche les questions en fonction du formulaire
+     * @return void 
+     */
+    public function search($mots = null, $categorie = null){
+        $query = $this->createQueryBuilder('i');
+        $query->where('i.active = 1');
+        if($mots != null){
+            $query->andWhere('MATCH_AGAINST(i.intitule) AGAINST (:mots boolean)>0')
+                ->setParameter('mots', $mots);
+        }
+        if($categorie != null){
+            $query->leftJoin('i.categorie', 'c');
+            $query->andWhere('c.id = :id')
+                ->setParameter('id', $categorie);
+        }
+        return $query->getQuery()->getResult();
+    }
+
     // /**
     //  * @return Interroger[] Returns an array of Interroger objects
     //  */
@@ -80,3 +99,25 @@ class InterrogerRepository extends ServiceEntityRepository
     }
     */
 }
+
+
+
+
+    // /**
+    //  * Recherche les annonces en fonction du formulaire
+    //  * @return void 
+    //  */
+    // public function search($mots = null, $categorie = null){
+    //     $query = $this->createQueryBuilder('a');
+    //     $query->where('a.active = 1');
+    //     if($mots != null){
+    //         $query->andWhere('MATCH_AGAINST(a.title, a.content) AGAINST (:mots boolean)>0')
+    //             ->setParameter('mots', $mots);
+    //     }
+    //     if($categorie != null){
+    //         $query->leftJoin('a.categories', 'c');
+    //         $query->andWhere('c.id = :id')
+    //             ->setParameter('id', $categorie);
+    //     }
+    //     return $query->getQuery()->getResult();
+    // }
