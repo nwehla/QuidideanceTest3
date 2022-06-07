@@ -55,7 +55,6 @@ class CompteController extends AbstractController
         $notification = null;
         //Récupération de l'utilisateur
         $user = $this->getUser();
-        //$user = $this->user;
         //Appel du formulaire
         $form = $this->createForm(ChangePasswordType::class, $user);
 
