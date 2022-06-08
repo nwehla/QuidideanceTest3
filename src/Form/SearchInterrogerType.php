@@ -16,7 +16,7 @@ class SearchInterrogerType extends AbstractType
     {
         $builder
             ->add('mots', SearchType::class, [
-                'label' => false,
+                'label' => 'Recherche par mots-clés',
                 'attr' => [
                     'class' => 'form-control',
                     'placeholder' => 'Entrez un ou plusieurs mots-clés'
@@ -25,7 +25,7 @@ class SearchInterrogerType extends AbstractType
             ])
             ->add('categorie', EntityType::class, [
                 'class' => Categories::class,
-                'label' => false,
+                'label' => 'Catégorie',
                 'attr' => [
                     'class' => 'form-control',
                 ],
