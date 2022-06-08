@@ -6,6 +6,8 @@ use App\Entity\Reponse;
 use App\Form\ReponseType;
 use App\Entity\Categories;
 use App\Entity\Interroger;
+use Symfony\Component\Form\FormEvent;
+use Symfony\Component\Form\FormEvents;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
@@ -45,19 +47,19 @@ class InterrogerType extends AbstractType
                 'multiple'=>true,
                 'expanded'=>true,
             ])
-            ->add('reponses', EntityType::class, [
-                // each entry in the array will be an "email" field
-                // these options are passed to each "email" type
-            // ->add('categorie', EntityType::class, ,[
-                'class'=>Reponse::class,
-                'placeholder'=>'selectionnner une réponse',
+            // ->add('reponses', EntityType::class, [
+            //     // each entry in the array will be an "email" field
+            //     // these options are passed to each "email" type
+            // // ->add('categorie', EntityType::class, ,[
+            //     'class'=>Reponse::class,
+            //     'placeholder'=>'selectionnner une réponse',
 
-                'choice_label'=>'titre',
-                'mapped' => true,
-                // utiliser un checkbox à choix unique ou multiple
-                'multiple'=>true,
-                'expanded'=>true,
-            ])
+            //     'choice_label'=>'titre',
+            //     'mapped' => true,
+            //     // utiliser un checkbox à choix unique ou multiple
+            //     'multiple'=>true,
+            //     'expanded'=>true,
+            // ])
             // ->add('reponses', CollectionType::class, [
             //     //each entry in the array will be an "email" field
             //     'entry_type' => ReponseType::class,
@@ -66,7 +68,27 @@ class InterrogerType extends AbstractType
             //        'attr' => ['class' => 'titre'],
             //     ],
             // ]);
+            ->add('reponses', CollectionType::class, array(
+                'entry_type' => ReponseType::class,
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                 'by_reference' => false
+
+            ))
         ;
+
+        $builder->addEventListener(
+            FormEvents::SUBMIT,
+            function (FormEvent $event) {
+                
+                foreach ($event->getData()->getReponses() as $reponse) {
+                    $reponse->setQuestion($event->getData());
+                }
+                
+            }
+        );
+
     }
 
     public function configureOptions(OptionsResolver $resolver): void

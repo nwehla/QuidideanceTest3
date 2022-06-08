@@ -5,6 +5,14 @@ body{
 td.toto{
     vertical-align: middle;
 }
+.card{
+
+    position:flex;
+    flex-wrap: wrap
+}
+
+    
+
 
 .item-navbar-custom a{
 color: #000;
