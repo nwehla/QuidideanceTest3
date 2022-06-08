@@ -20,10 +20,11 @@
     <h1>Gestion des questions</h1>
 </div>
 </br>
+{{ form(form) }}
     
 <div class="py-3">
     <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
-        {{knp_pagination_render(interrogers)}}
+         {# {{knp_pagination_render(interrogers)}} #}
         <svg
           width="1em"
           height="1em"
@@ -47,19 +48,17 @@
             </tr>           
         </thead>
         <tbody>
-            {{ dump(interrogers)}}
         {% for interroger in interrogers %}
             <tr>
-                <td>{{ dump(interroger.intitule) }}</td>
+                <td>{{ interroger.intitule }}</td>
                 {% for cat in interroger.categorie %}
 
                 <td class="d-flex flex-column  mb-2">{{ cat|raw }}</td>   
    
 
                 {% endfor %}
-                {# {{ interroger.reponses }} #}
                 {% for toto in interroger.reponses %}
-                <td>{{ dump(toto.titre) }}</td>
+                <td>{{ toto.titre }}</td>
                 {% endfor %}
 
                 
@@ -73,15 +72,13 @@
 
 
                 <td>
-                    <a href="{{ path('app_interroger_show', {'slug': interroger.slug}) }}" class="btn btn-dark mt-3">Voir</a>
+                    <a href="{{ path('app_interroger_show', {'slug': interroger.slug|default() }) }}" class="btn btn-dark mt-3">Voir</a>
                 </td>
                 <td>
                     <a href="{{ path('app_interroger_edit', {'slug': interroger.slug}) }}" class="btn btn-warning mt-3 btn-outline-warning">Modifier</a>
                 </td>
                 <td>
                     {{ include('interroger/_delete_form.html.twig') }}
-
-
                 </td>
             </tr>
         {% else %}
@@ -92,7 +89,7 @@
         </tbody>
     </table>
     <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
-        {{knp_pagination_render(interrogers)}}
+        {# {{knp_pagination_render(interrogers)}} #}
         <svg
           width="1em"
           height="1em"

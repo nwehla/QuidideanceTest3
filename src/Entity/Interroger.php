@@ -9,6 +9,7 @@ use Doctrine\ORM\Mapping as ORM;
 
 /**
  * @ORM\Entity(repositoryClass=InterrogerRepository::class)
+ * @ORM\Table(name="interroger", indexes={@ORM\Index(columns={"intitule"}, flags={"fulltext"})})
  */
 class Interroger
 {
@@ -39,6 +40,11 @@ class Interroger
      * @ORM\ManyToMany(targetEntity=Categories::class, inversedBy="interrogers")
      */
     private $categorie;
+
+    /**
+     * @ORM\Column(type="boolean")
+     */
+    private $active;
       
 
     
@@ -130,6 +136,18 @@ class Interroger
     public function removeCategorie(Categories $categorie): self
     {
         $this->categorie->removeElement($categorie);
+
+        return $this;
+    }
+
+    public function isActive(): ?bool
+    {
+        return $this->active;
+    }
+
+    public function setActive(bool $active): self
+    {
+        $this->active = $active;
 
         return $this;
     }
