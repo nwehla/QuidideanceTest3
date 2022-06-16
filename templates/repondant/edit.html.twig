@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Repondant{% endblock %}
+
+{% block body %}
+    <h1>Edit Repondant</h1>
+
+    {{ include('repondant/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_repondant_index') }}">back to list</a>
+
+    {{ include('repondant/_delete_form.html.twig') }}
+{% endblock %}

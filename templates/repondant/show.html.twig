@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Repondant{% endblock %}
+
+{% block body %}
+    <h1>Repondant</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ repondant.id }}</td>
+            </tr>
+            <tr>
+                <th>Repondant</th>
+                <td>{{ repondant.repondant }}</td>
+            </tr>
+            <tr>
+                <th>Commentaire</th>
+                <td>{{ repondant.commentaire }}</td>
+            </tr>
+            <tr>
+                <th>Email</th>
+                <td>{{ repondant.email }}</td>
+            </tr>
+            <tr>
+                <th>Acceptationpartagedonnee</th>
+                <td>{{ repondant.acceptationpartagedonnee ? 'Yes' : 'No' }}</td>
+            </tr>
+            <tr>
+                <th>Datecreation</th>
+                <td>{{ repondant.datecreation ? repondant.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Datemiseajour</th>
+                <td>{{ repondant.datemiseajour ? repondant.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Datefermeture</th>
+                <td>{{ repondant.datefermeture ? repondant.datefermeture|date('Y-m-d H:i:s') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Slug</th>
+                <td>{{ repondant.slug }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_repondant_index') }}">back to list</a>
+
+    <a href="{{ path('app_repondant_edit', {'id': repondant.id}) }}">edit</a>
+
+    {{ include('repondant/_delete_form.html.twig') }}
+{% endblock %}

@@ -39,23 +39,20 @@ class SondageType extends AbstractType
                 'placeholder' => 'Entrez le titre du sondage',
                 ],
                 ])
-            ->add('categorie', EntityType::class, [
-                'mapped' => false,
-                'class' => Categories::class,
-                'choice_label' => 'titre',
-                'label' => 'Catégorie'
-            ])
-            ->add('interroger', EntityType::class, [
-                'mapped' => false,
-                'class' => Interroger::class,
-                'choice_label' => 'intitule',
-                'label' => 'Question'
-            ])
-            // ->add('question',ChoiceType::class, [
-            //     'label' => 'Question (Sélectionner une catégorie)',
-            //     'placeholder' => 'Sélectionner une question'
-            //     ])
-
+                ->add('categorie', EntityType::class, [
+                    // each entry in the array will be an "email" field
+                    // these options are passed to each "email" type
+                // ->add('categorie', EntityType::class, ,[
+                    'class'=>Categories::class,
+                    'placeholder'=>'selectionnner une categorie',
+    
+                    'choice_label'=>'titre',
+                    'mapped' => true,
+                    // utiliser un checkbox à choix unique ou multiple
+                    'multiple'=>false,
+                    'expanded'=>false,
+                ])
+            
             ->add('description',TextareaType::class, [
                 'label' => 'Description du sondange :',
                 'required' => false,
@@ -64,38 +61,6 @@ class SondageType extends AbstractType
                 'rows' => 10,
                 'cols' => 20,
                 ],
-                ])
-
-            // ->add('interroger', EntityType::class, [
-            //     // Label du champ    
-            //     'label'  => 'Question',
-            //     'placeholder' => 'Sélectionner',
-            //     // looks for choices from this entity
-            //     'class' => Interroger::class,
-            //     // Sur quelle propriete je fais le choix
-            //     'choice_label' => 'intitule',
-            //     // used to render a select box, check boxes or radios
-            //      'multiple' => true,
-            //     'expanded' => false,
-            //     'required' => true,
-            // ])
-
-            // ->add('reponse', EntityType::class, [
-            //     // Label du champ    
-            //     'label'  => 'Réponse',
-            //     'placeholder' => 'Sélectionner',
-            //     // looks for choices from this entity
-            //     'class' => Reponse::class,
-            //     // Sur quelle propriete je fais le choix
-            //     'choice_label' => 'intitule',
-            //     // used to render a select box, check boxes or radios
-            //     // 'multiple' => true,
-            //     //'expanded' => true,)
-            // ])
-                
-            ->add('multiple',CheckboxType::class, [
-                'label' => 'Plusieurs réponses possibles.',
-                'required' => false,
                 ])
 
             ->add('statut',ChoiceType::class, [
@@ -119,46 +84,17 @@ class SondageType extends AbstractType
                 ],
             ]);
 
-            $formModifier = function(FormInterface $form, Categories $categorie = null){
-                $question = (null === $categorie) ? [] : $categorie->getInterrogers();
-                $form->add('question', EntityType::class, [
-                    'class' => Interroger::class,
-                    'choices' => $question,
-                    'choice_label' => 'intitule',
-                    'placeholder' => 'Catégorie (choisir une catégorie)',
-                    'label' => 'Question'
-                ]);
-            };
+            // $formModifier = function(FormInterface $form, Categories $categorie = null){
+            //     $question = (null === $categorie) ? [] : $categorie->getInterrogers();
+            //     $form->add('question', EntityType::class, [
+            //         'class' => Interroger::class,
+            //         'choices' => $question,
+            //         'choice_label' => 'intitule',
+            //         'placeholder' => 'Catégorie (choisir une catégorie)',
+            //         'label' => 'Question'
+            //     ]);
+            //};
             
-            $builder->get('categorie')->addEventListener(
-                FormEvents::POST_SUBMIT,
-                function (FormEvent $event) use ($formModifier){
-                    $categorie = $event->getForm()->getData();
-                    $formModifier($event->getForm()->getParent(), $categorie);
-
-                }
-            );
-
-
-            // ->add('datecreation',DateTime::class, [
-            //     'label' => 'Date de création du sondage :'
-                
-            //     ])
-            // ->add('datemiseajour',DateTime::class, [
-            //     'label' => 'Date de mise à jour du sondage :'
-            // ])
-            // ->add('datedefermeture',DateTime::class, [
-            //     'label' => 'Date de fermeture du sondage :'
-                
-            // ]);
-        //     ;
-        // $builder->add('interroger', CollectionType::class, [
-        //     'entry_type' => InterrogerType::class,
-        //     'entry_options' => ['label' => false],
-        //     'allow_add' => true,
-        //     'allow_delete' => true,
-        //     'by_reference' => false,
-        //     ]);
             
     }
 

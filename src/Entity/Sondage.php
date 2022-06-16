@@ -71,6 +71,21 @@ class Sondage
      * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="sondage")
      */
     private $survey;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="sondages")
+     */
+    private $categorie;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Repondant::class, mappedBy="sondage")
+     */
+    private $repondant;
+
+    public function __construct()
+    {
+        $this->repondant = new ArrayCollection();
+    }
     
 
    
@@ -197,6 +212,48 @@ class Sondage
     public function setSurvey(?Survey $survey): self
     {
         $this->survey = $survey;
+
+        return $this;
+    }
+
+    public function getCategorie(): ?Categories
+    {
+        return $this->categorie;
+    }
+
+    public function setCategorie(?Categories $categorie): self
+    {
+        $this->categorie = $categorie;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Repondant>
+     */
+    public function getRepondant(): Collection
+    {
+        return $this->repondant;
+    }
+
+    public function addRepondant(Repondant $repondant): self
+    {
+        if (!$this->repondant->contains($repondant)) {
+            $this->repondant[] = $repondant;
+            $repondant->setSondage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRepondant(Repondant $repondant): self
+    {
+        if ($this->repondant->removeElement($repondant)) {
+            // set the owning side to null (unless already changed)
+            if ($repondant->getSondage() === $this) {
+                $repondant->setSondage(null);
+            }
+        }
 
         return $this;
     }    

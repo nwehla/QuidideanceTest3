@@ -40,10 +40,16 @@ class Categories
      */
     private $interrogers;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Sondage::class, mappedBy="categorie")
+     */
+    private $sondages;
+
     public function __construct()
     {
         $this->surveys = new ArrayCollection();
         $this->interrogers = new ArrayCollection();
+        $this->sondages = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -133,6 +139,36 @@ class Categories
     {
         if ($this->interrogers->removeElement($interroger)) {
             $interroger->removeCategorie($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Sondage>
+     */
+    public function getSondages(): Collection
+    {
+        return $this->sondages;
+    }
+
+    public function addSondage(Sondage $sondage): self
+    {
+        if (!$this->sondages->contains($sondage)) {
+            $this->sondages[] = $sondage;
+            $sondage->setCategorie($this);
+        }
+
+        return $this;
+    }
+
+    public function removeSondage(Sondage $sondage): self
+    {
+        if ($this->sondages->removeElement($sondage)) {
+            // set the owning side to null (unless already changed)
+            if ($sondage->getCategorie() === $this) {
+                $sondage->setCategorie(null);
+            }
         }
 
         return $this;

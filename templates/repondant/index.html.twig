@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Repondant index{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+</div>
+<h1>Repondant index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Repondant</th>
+            <th>Commentaire</th>
+            <th>Email</th>
+            <th>Acceptationpartagedonnee</th>
+            <th>Datecreation</th>
+            <th>Datemiseajour</th>
+            <th>Datefermeture</th>
+            <th>Slug</th>
+            <th>actions</th>
+        </tr>
+    </thead>
+    <tbody>
+    {% for repondant in repondants %}
+        <tr>
+            <td>{{ repondant.id }}</td>
+            <td>{{ repondant.repondant }}</td>
+            <td>{{ repondant.commentaire }}</td>
+            <td>{{ repondant.email }}</td>
+            <td>{{ repondant.acceptationpartagedonnee ? 'Yes' : 'No' }}</td>
+            <td>{{ repondant.datecreation ? repondant.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ repondant.datemiseajour ? repondant.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ repondant.datefermeture ? repondant.datefermeture|date('Y-m-d H:i:s') : '' }}</td>
+            <td>{{ repondant.slug }}</td>
+            <td>
+                <a href="{{ path('app_repondant_show', {'id': repondant.id}) }}">show</a>
+                <a href="{{ path('app_repondant_edit', {'id': repondant.id}) }}">edit</a>
+            </td>
+        </tr>
+    {% else %}
+        <tr>
+            <td colspan="10">no records found</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+
+<a href="{{ path('app_repondant_new') }}">Create new</a>
+
+{% endblock %}
