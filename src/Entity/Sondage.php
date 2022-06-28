@@ -67,10 +67,7 @@ class Sondage
     private $slug;
 
    
-    /**
-     * @ORM\ManyToOne(targetEntity=Survey::class, inversedBy="sondage")
-     */
-    private $survey;
+   
 
     /**
      * @ORM\ManyToOne(targetEntity=Categories::class, inversedBy="sondages")
@@ -82,9 +79,26 @@ class Sondage
      */
     private $repondant;
 
+    /**
+     * @ORM\OneToMany(targetEntity=Interroger::class, mappedBy="sondage")
+     */
+    private $questions;
+
+    /**
+     * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="sondage",cascade={"persist"})
+     */
+    private $reponses;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $question;
+
     public function __construct()
     {
         $this->repondant = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+        $this->reponses = new ArrayCollection();
     }
     
 
@@ -204,18 +218,8 @@ class Sondage
     }
 
     
-    public function getSurvey(): ?Survey
-    {
-        return $this->survey;
-    }
-
-    public function setSurvey(?Survey $survey): self
-    {
-        $this->survey = $survey;
-
-        return $this;
-    }
-
+    // 
+    
     public function getCategorie(): ?Categories
     {
         return $this->categorie;
@@ -254,6 +258,78 @@ class Sondage
                 $repondant->setSondage(null);
             }
         }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Interroger>
+     */
+    public function getQuestions(): Collection
+    {
+        return $this->questions;
+    }
+
+    public function addQuestion(Interroger $question): self
+    {
+        if (!$this->questions->contains($question)) {
+            $this->questions[] = $question;
+            $question->setSondage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeQuestion(Interroger $question): self
+    {
+        if ($this->questions->removeElement($question)) {
+            // set the owning side to null (unless already changed)
+            if ($question->getSondage() === $this) {
+                $question->setSondage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Reponse>
+     */
+    public function getReponses(): Collection
+    {
+        return $this->reponses;
+    }
+
+    public function addReponse(Reponse $reponse): self
+    {
+        if (!$this->reponses->contains($reponse)) {
+            $this->reponses[] = $reponse;
+            $reponse->setSondage($this);
+        }
+
+        return $this;
+    }
+
+    public function removeReponse(Reponse $reponse): self
+    {
+        if ($this->reponses->removeElement($reponse)) {
+            // set the owning side to null (unless already changed)
+            if ($reponse->getSondage() === $this) {
+                $reponse->setSondage(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getQuestion(): ?string
+    {
+        return $this->question;
+    }
+
+    public function setQuestion(string $question): self
+    {
+        $this->question = $question;
 
         return $this;
     }    

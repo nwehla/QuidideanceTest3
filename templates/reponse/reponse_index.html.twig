@@ -40,11 +40,9 @@
             <tr>
                 <td>{{ reponse.titre }}</td>
                 {# <td>{{ reponse.question |raw }}</td> #}
-                {% for toto in reponse.question %}
 
-                <td class=".d-sm-block"><li>{{ toto|raw }}</li></td>                
+                <td class=".d-sm-block"><li>{{ reponse.question.intitule|raw }}</li></td>                
 
-                {% endfor %}
                 <td>{{ reponse.datecreation ? reponse.datecreation|date('Y-m-d H:i:s') : '' }}</td>
                 <td>{{ reponse.datemiseajour ? reponse.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
                 

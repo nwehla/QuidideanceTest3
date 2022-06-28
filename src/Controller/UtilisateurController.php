@@ -69,35 +69,7 @@ class UtilisateurController extends AbstractController
             return $this->redirectToRoute('app_accueil', [], Response::HTTP_SEE_OTHER);
          }
     }
-    // creation d'une fonction d'activation du token
-// /**
-//  * @Route("/activation/{token}", name="activation")
-//  */
-//     public function gestionToken($token,UtilisateurRepository $repo,EntityManagerInterface $manager)
-//     {
-//        //on verifie si un utilisateur a ce token
-//        $utilisateur = $repo->findOneBy(['activation_token' => $token]);
-       
-//        //si aucun utilisateur n'existe pas avec ce token.$_COOKIE
-//        if(!$utilisateur)
-//        {
-//            //Erreur 404
-//            throw $this->createNotFoundException('Cet utilisateur n\'existe pas');
-//        }
-       
-//        //on supprime le token.
-//        $utilisateur->setActivateToken(null);
-//        //on persist
-//        $manager->persist($utilisateur);
-//        //on flush
-//        $manager->flush($utilisateur);
-//        //on envoie un message flash.
-//        $this->addflash('message','Vous avez bien activé votre compte');
-//        //on retourne à l'accueil.
-//        return $this->redirectToRoute('accueil');
-
-
-//     }
+   
 
     /**
      * @Route("/{slug}", name="app_utilisateur_show", methods={"GET"})

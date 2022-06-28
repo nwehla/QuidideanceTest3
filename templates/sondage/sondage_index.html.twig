@@ -3,98 +3,104 @@
 {% block title %}Gestion des sondages{% endblock %}
 
 {% block content %}
-{% for message in app.flashes('success') %}
-<div class="alert alert-success">
-    {{ message }}
-</div>
-{% endfor %}
-
-<div class="py-3" id="3">
-    <a href="{{ path('app_sondage_new') }}" class="btn btn-success mt-3">Nouveau sondage</a>
-
-</div>
-
-<div class="jumbotron text-center py-3">
-    <h1>Gestion des sondages</h1>
-</div>
-</br>
-<button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
-    {{knp_pagination_render(sondages)}}
-    <svg
-      width="1em"
-      height="1em"
-      viewBox="0 0 16 16"
-      class="position-absolute top-100 start-50 translate-middle bi bi-caret-down-fill"
-      fill="#212529"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-    </svg>
-  </button>
-<div class="py-3">
-    <table class="table table-striped bordored-radius=2px text-center table-dark">
-            <thead class="table-primary text-uppercase text-bold">
-            
-            <th>Titre</th>
-            <th>Question</th>
-            <th>Description</th>
-            <th>Multiple</th>
-            <th>Statut</th>
-            <th>Message de fermeture</th>
-            <th>Date de creation</th>
-            <th>Date mise à jour</th>
-            <th>Date de fermeture</th>
-            <th>Voir</th>
-            <th>Modifier</th>
-            <th>Supprimer</th>         
-        </thead>
-        <tbody>
-        {% for sondage in sondages %}
-            <tr>
-                <td>{{ sondage.titre }}</td>
-                {# <td>{{ sondage.question }}</td> #}
-                <td>{{ sondage.description }}</td>
-                <td>{{ sondage.multiple ? 'Yes' : 'No' }}</td>
-                
-                <td>{{ sondage.statut }}</td>
-                <td>{{ sondage.messagefermeture }}</td>
-                <td>{{ sondage.datecreation ? sondage.datecreation|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sondage.datemiseajour ? sondage.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
-                <td>{{ sondage.datedefermeture ? sondage.datedefermeture|date('Y-m-d H:i:s') : '' }}</td>
-                
-                <td>
-                    <a href="{{ path('app_sondage_show', {'slug': sondage.slug}) }}" class="btn btn-dark mt-3">Voir</a>
-                </td>
-                <td>
-                    <a href="{{ path('app_sondage_edit', {'slug': sondage.slug}) }}" class="btn btn-warning mt-3 btn-outline-warning">Modifier</a>
-                </td>
-                <td>
-                    {{ include('sondage/_delete_form.html.twig') }}
-
-
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="9">Pas d'enregistrement trouvé</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
-        {{knp_pagination_render(sondages)}}
-        <svg
-          width="1em"
-          height="1em"
-          viewBox="0 0 16 16"
-          class="position-absolute top-100 start-50 translate-middle bi bi-caret-down-fill"
-          fill="#212529"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
-        </svg>
-      </button>
-
+<div class="container py-3">
+  {% for message in app.flashes('success') %}
+  <div class="alert alert-success">
+      {{ message }}
+  </div>
+  {% endfor %}
+  
+  <div class="py-3" id="3">
+      <a href="{{ path('app_sondage_new') }}" class="btn btn-outline-primary mt-3">Nouveau sondage</a>
+  
+  </div>
+  {# <div class="py-3">
+      <h1><a class="btn btn-outline-warning " href="{{path('sondageduneCategorie')}}"> Sondage d'une categorie !</a>
+    </div> #}
+  
+  <div class="jumbotron text-center py-3">
+      <h1>Gestion des sondages</h1>
+  </div>
+  </br>
+  <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
+      {{knp_pagination_render(sondages)}}
+      <svg
+        width="1em"
+        height="1em"
+        viewBox="0 0 16 16"
+        class="position-absolute top-100 start-50 translate-middle bi bi-caret-down-fill"
+        fill="#212529"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+      </svg>
+    </button>
+  <div class="py-3">
+      <table class="table table-striped bordored-radius=2px text-center table-dark">
+              <thead class="table-primary text-uppercase text-bold">
+              
+              <th>Titre</th>
+              <th>Question</th>
+              <th>Description</th>
+              {# <th>Multiple</th> #}
+              <th>Statut</th>
+              <th>Message de fermeture</th>
+              <th>Date de creation</th>
+              <th>Date de mise à jour</th>
+              <th>Date de fermeture</th>
+              <th>Voir</th>
+              <th>Modifier</th>
+              <th>Supprimer</th>         
+          </thead>
+          <tbody>
+          {% for sondage in sondages %}
+              <tr>
+                  <td>{{ sondage.titre }}</td>
+                  <td>{{ sondage.question }}</td>
+                  <td>{{ sondage.description }}</td>
+                  {# <td>{{ sondage.multiple ? 'Yes' : 'No' }}</td> #}
+                  
+                  <td>{{ sondage.statut }}</td>
+                  <td>{{ sondage.messagefermeture }}</td>
+                  <td>{{ sondage.datecreation ? sondage.datecreation|date('Y-m-d H:i:s') : '' }}</td>
+                  <td>{{ sondage.datemiseajour ? sondage.datemiseajour|date('Y-m-d H:i:s') : '' }}</td>
+                  <td>{{ sondage.datedefermeture ? sondage.datedefermeture|date('Y-m-d H:i:s') : '' }}</td>
+                  
+                  <td>
+                      <a href="{{ path('app_sondage_show', {'slug': sondage.slug}) }}" class="btn btn-dark mt-3">Voir</a>
+                  </td>
+                  <td>
+                      <a href="{{ path('app_sondage_edit', {'slug': sondage.slug}) }}" class="btn btn-warning mt-3 btn-outline-warning">Modifier</a>
+                  </td>
+                  <td>
+                      {{ include('sondage/_delete_form.html.twig') }}
+  
+  
+                  </td>
+              </tr>
+          {% else %}
+              <tr>
+                  <td colspan="9">Pas d'enregistrement trouvé</td>
+              </tr>
+          {% endfor %}
+          </tbody>
+      </table>
+      <button type="button" class="btn btn-dark position-relative" data-mdb-ripple-unbound="true">
+          {{knp_pagination_render(sondages)}}
+          <svg
+            width="1em"
+            height="1em"
+            viewBox="0 0 16 16"
+            class="position-absolute top-100 start-50 translate-middle bi bi-caret-down-fill"
+            fill="#212529"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path d="M7.247 11.14L2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z"/>
+          </svg>
+        </button>
+  
+  </div>
+  
 </div>
     
 {% endblock %}

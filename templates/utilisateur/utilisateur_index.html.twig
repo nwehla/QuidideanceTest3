@@ -42,7 +42,7 @@
                 <tr>
                     <th >Prenom</th>
                     <th>Email</th>
-                    <th>Password</th>
+                    {# <th>Password</th> #}
                     <th>Slug</th>
                     <th>Roles</th>
                     {# <th>Slug</th> #}
@@ -58,7 +58,7 @@
                 <tr>
                     <td>{{ utilisateur.username }}</td>
                     <td>{{ utilisateur.email }}</td>
-                    <td>{{ utilisateur.password }}</td>
+                    {# <td>{{ utilisateur.password }}</td> #}
                     <td>{{ utilisateur.slug|default('default_slug') }}</td>
                     <td>{{ utilisateur.roles ? utilisateur.roles|json_encode : '' }}</td>
                     <td>{{ utilisateur.datecreation ? utilisateur.datecreation|date('Y-m-d H:i:s') : '' }}</td>

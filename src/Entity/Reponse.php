@@ -42,6 +42,11 @@ class Reponse
      */
     private $question;
 
+    /**
+     * @ORM\ManyToOne(targetEntity=Sondage::class, inversedBy="reponses")
+     */
+    private $sondage;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -110,5 +115,17 @@ class Reponse
     public function __toString()
     {
         return $this->titre;
+    }
+
+    public function getSondage(): ?Sondage
+    {
+        return $this->sondage;
+    }
+
+    public function setSondage(?Sondage $sondage): self
+    {
+        $this->sondage = $sondage;
+
+        return $this;
     }
 }

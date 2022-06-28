@@ -1,19 +1,57 @@
-{{ form_start(form) }}
-{# 
-    <fieldset>
-        
-        <ol id="idOlProposition" class="propositions" data-prototype="{{ 
-       form_widget(--!form.--interroger.--vars.prototype!--)|e('html_attr') }}"> 
-        {# iterate over each existing proposition and render its only field: wording #}
-        {# {% for interroge in form.interroger %}
-        <li>
-        {{ form_row(interroge.intitule) }}
-        </li>
-        {% endfor %}
-        </ol>
-        <div id="add_button"></div>
-        </fieldset> #} 
-        {{ form_widget(form)}}
+{{form_widget(form._token) }}
+{{ form_errors(form) }}
+{{ form_row(form.titre)}}
+{{ form_row(form.question) }}
 
-    <button class="btn">{{ button_label|default('Enregistrer') }}</button>
-{{ form_end(form) }}
+        <button type="button" class="btn btn-primary btn-new" data-collection="#Reponses">Nouvelle réponse</button>
+        <div
+            id="Reponses"
+            class="row"
+            data-prototype="{{ include("sondage/_sup.html.twig", {form: form.reponses.vars.prototype})|e("html_attr") }}"
+            data-index="{{ form.reponses|length > 0 ? form.reponses|last.vars.titre- + 1 : 0 }}">
+        {% for reponse in form.reponses %}
+            <div class="col-4">
+                {{ include("interroger/_sup.html.twig", {form: reponse }) }}
+            </div>
+        {% endfor %}
+    </div>
+    <div>
+      {{ form_row(form.categorie) }}
+
+    </div>
+    <div>
+      {{form_widget(form)}}
+
+    </div>
+    {{ form_errors(form.reponses) }}  
+    <script>
+    
+        const newItem = (e) => {
+      const collectionHolder = document.querySelector(e.currentTarget.dataset.collection);
+    
+      const item = document.createElement("div");
+      item.classList.add("col-4");
+      item.innerHTML = collectionHolder
+        .dataset
+        .prototype
+        .replace(
+          /__name__/g,
+          collectionHolder.dataset.index
+        );
+    
+      item.querySelector(".btn-remove").addEventListener("click", () => item.remove());
+    
+      collectionHolder.appendChild(item);
+    
+      collectionHolder.dataset.index++;
+    };
+    
+    document
+      .querySelectorAll('.btn-remove')
+      .forEach(btn => btn.addEventListener("click", (e) => e.currentTarget.closest(".col-4").remove()));
+    
+    document
+      .querySelectorAll('.btn-new')
+      .forEach(btn => btn.addEventListener("click", newItem));
+    
+    </script> 

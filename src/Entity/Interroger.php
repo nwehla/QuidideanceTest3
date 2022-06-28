@@ -32,7 +32,7 @@ class Interroger
 
    
     /**
-     * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="question")
+     * @ORM\OneToMany(targetEntity=Reponse::class, mappedBy="question ",cascade={"persist"}))
      */
     private $reponses;
 
@@ -45,6 +45,11 @@ class Interroger
      * @ORM\Column(type="boolean")
      */
     private $active;
+
+    /**
+     * @ORM\ManyToOne(targetEntity=Sondage::class, inversedBy="questions")
+     */
+    private $sondage;
       
 
     
@@ -148,6 +153,18 @@ class Interroger
     public function setActive(bool $active): self
     {
         $this->active = $active;
+
+        return $this;
+    }
+
+    public function getSondage(): ?Sondage
+    {
+        return $this->sondage;
+    }
+
+    public function setSondage(?Sondage $sondage): self
+    {
+        $this->sondage = $sondage;
 
         return $this;
     }

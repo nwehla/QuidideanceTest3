@@ -51,6 +51,27 @@ class SondageRepository extends ServiceEntityRepository
         }
     }
 
+    public function findBySondageduneCategorie(){
+        $qb = $this->createQueryBuilder('s');
+
+
+        $qb
+            ->join('APP\Entity\Categories', 'c' ,'WITH','c = s.categorie')
+
+            ->innerjoin('App\Entity\Interroger', 'i' ,'WITH','i = s.questions')
+            ->where('i.intitule =:intitule')         
+
+            ->innerjoin('App\Entity\Reponse', 'r' ,'WITH','r = s.reponses')
+            ->where('r.titre =:titre')            ->where('c.titre =:titre ')
+            ->setParameter('titre','culture et loisirs')
+            ->groupBy("s.categorie")
+
+            ->orderBy('s.id', 'ASC');
+
+        return $qb->getQuery()->getResult();
+    
+    }
+
     // /**
     //  * @return Sondage[] Returns an array of Sondage objects
     //  */

@@ -30,17 +30,17 @@ class ReponseType extends AbstractType
                 ],
             'required' => true
         ])
-        ->add('question', EntityType::class, [
-            // each entry in the array will be an "email" field
-            // these options are passed to each "email" type
-            'class'=>Interroger::class,
-            'choice_label'=>'intitule',
-            'mapped' => true,
-            // utiliser un checkbox à choix unique ou multiple
-            'multiple'=> false,
-            'expanded'=> true,
-            'required' => true
-           ])
+        // ->add('question', EntityType::class, [
+        //     // each entry in the array will be an "email" field
+        //     // these options are passed to each "email" type
+        //     'class'=>Interroger::class,
+        //     'choice_label'=>'intitule',
+        //     'mapped' => true,
+        //     // utiliser un checkbox à choix unique ou multiple
+        //     'multiple'=> false,
+        //     'expanded'=> true,
+        //     'required' => true
+        //    ])
         // ->add('question', CollectionType::class, [
         //     //each entry in the array will be an "email" field
         //     'entry_type' => InterrogerType::class,

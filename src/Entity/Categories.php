@@ -30,11 +30,7 @@ class Categories
     private $slug;
 
     
-    /**
-     * @ORM\OneToMany(targetEntity=Survey::class, mappedBy="categorie")
-     */
-    private $surveys;
-
+    
     /**
      * @ORM\ManyToMany(targetEntity=Interroger::class, mappedBy="categorie")
      */
@@ -47,7 +43,6 @@ class Categories
 
     public function __construct()
     {
-        $this->surveys = new ArrayCollection();
         $this->interrogers = new ArrayCollection();
         $this->sondages = new ArrayCollection();
     }
@@ -87,36 +82,8 @@ class Categories
         return $this->titre;
     }
 
-    /**
-     * @return Collection<int, Survey>
-     */
-    public function getSurveys(): Collection
-    {
-        return $this->surveys;
-    }
-
-    public function addSurvey(Survey $survey): self
-    {
-        if (!$this->surveys->contains($survey)) {
-            $this->surveys[] = $survey;
-            $survey->setCategorie($this);
-        }
-
-        return $this;
-    }
-
-    public function removeSurvey(Survey $survey): self
-    {
-        if ($this->surveys->removeElement($survey)) {
-            // set the owning side to null (unless already changed)
-            if ($survey->getCategorie() === $this) {
-                $survey->setCategorie(null);
-            }
-        }
-
-        return $this;
-    }
-
+   
+    
     /**
      * @return Collection<int, Interroger>
      */

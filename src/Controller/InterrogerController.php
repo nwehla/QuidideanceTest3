@@ -112,6 +112,7 @@ class InterrogerController extends AbstractController
             $interroger->setSlug($this->getSlugger($interroger))
                         ->setActive(true);
             $interrogerRepository->add($interroger);
+            
             $this->addFlash("success","La modification a été effectuée");
             return $this->redirectToRoute('app_interroger_index', [], Response::HTTP_SEE_OTHER);
         }

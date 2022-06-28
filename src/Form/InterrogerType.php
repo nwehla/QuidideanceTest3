@@ -47,27 +47,7 @@ class InterrogerType extends AbstractType
                 'multiple'=>true,
                 'expanded'=>true,
             ])
-            // ->add('reponses', EntityType::class, [
-            //     // each entry in the array will be an "email" field
-            //     // these options are passed to each "email" type
-            // // ->add('categorie', EntityType::class, ,[
-            //     'class'=>Reponse::class,
-            //     'placeholder'=>'selectionnner une réponse',
-
-            //     'choice_label'=>'titre',
-            //     'mapped' => true,
-            //     // utiliser un checkbox à choix unique ou multiple
-            //     'multiple'=>true,
-            //     'expanded'=>true,
-            // ])
-            // ->add('reponses', CollectionType::class, [
-            //     //each entry in the array will be an "email" field
-            //     'entry_type' => ReponseType::class,
-            //     //these options are passed to each "email" type
-            //     'entry_options' => [
-            //        'attr' => ['class' => 'titre'],
-            //     ],
-            // ]);
+            
             ->add('reponses', CollectionType::class, array(
                 'entry_type' => ReponseType::class,
                 'allow_add' => true,
